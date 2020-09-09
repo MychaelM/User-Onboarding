@@ -30,9 +30,9 @@ function Form() {
 
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    console.log('users after useEffect', users);
-  }, [users]);
+  // useEffect(() => {
+  //   console.log('users after useEffect', users);
+  // }, [users]);
 
   const validate = e => {
 
@@ -76,9 +76,16 @@ function Form() {
       .catch(err => {
         console.log(err);
       })
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        terms: false
+      });
   }
   
   return (
+    <div>
     <form onSubmit={formSubmit}>
       <label htmlFor="name">Name
         <input 
@@ -138,6 +145,9 @@ function Form() {
 
       <button type="submit">Submit</button>
     </form>
+
+      {users.map((user, index) => (<pre key={index}>{JSON.stringify(user.data)}</pre>))}
+    </div>
   )
 }
 
