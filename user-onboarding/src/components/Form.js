@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const formSchema = yup.object().shape({
   name: yup.string().required("Name is definitely required."),
@@ -59,7 +60,14 @@ function Form() {
   const formSubmit = e => {
     e.preventDefault();
     console.log('Submitted Form');
-
+    axios
+      .post(`https://reqres.in/api/users`, formData)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
   
   return (
