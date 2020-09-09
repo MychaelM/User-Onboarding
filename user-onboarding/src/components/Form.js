@@ -8,7 +8,7 @@ const formSchema = yup.object().shape({
         .email("This Must be an Email Address")
         .required("You have to provide an Email Address"),
   password: yup.string().length(8, 'Password must be at least 8 characters'),
-  terms: yup.boolean().oneOf([true], "Agree to the Terms mate")
+  terms: yup.bool().oneOf([true], "Agree to the Terms mate")
 })
 
 function Form() {
@@ -20,12 +20,40 @@ function Form() {
     terms: false
   });
 
+  const [errorState, setErrorState] = useState({
+    name: '',
+    email: '',
+    password: '',
+    terms: ''
+  });
+
+  const validate = e => {
+
+    yup
+      .reach(formSchema, e.target.name)
+      .validate(e.target.value)
+      .then(valid => {
+        setErrorState({
+          ...errorState, 
+          [e.target.name]: ''
+        });
+      })
+      .catch(err => {
+        setErrorState({
+          ...errorState,
+          [e.target.name]: err.errors[0]
+        });
+      })
+  }
+
   const inputChange = (e) => {
+    e.persist();
     // console.log(e.target.name);
     // console.log(e.target.value);
+    validate(e);
     let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
     setFormData({ ...formData, [e.target.name]: value })
-    // console.log(formData);
+    console.log(formData);
   }
 
   const formSubmit = e => {
@@ -46,6 +74,9 @@ function Form() {
         />
       </label>
       <br/>
+      {errorState.name.length > 0 ? (
+        <p>{errorState.name}</p>
+      ) : null}
 
       <label htmlFor="email">Email
         <input 
@@ -57,6 +88,9 @@ function Form() {
         />
       </label>
       <br />
+      {errorState.email.length > 0 ? (
+        <p>{errorState.email}</p>
+      ) : null}
 
       <label htmlFor="password">Password
         <input 
@@ -68,6 +102,9 @@ function Form() {
         />
       </label>
       <br />
+      {errorState.password.length > 0 ? (
+        <p>{errorState.password}</p>
+      ) : null}
 
       <label htmlFor="name">Terms & Service
         <input 
@@ -77,6 +114,9 @@ function Form() {
           checked={formData.terms}
           onChange={inputChange}
         />
+        {errorState.terms > 0 ? (
+          <p>{errorState.terms}</p>
+        ) : null}
       </label>
       <br />
 
