@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ const formSchema = yup.object().shape({
         .string()
         .email("This Must be an Email Address")
         .required("You have to provide an Email Address"),
-  password: yup.string().length(8, 'Password must be at least 8 characters'),
+  password: yup.string().min(5, 'Password must be at least 5 characters'),
   terms: yup.bool().oneOf([true], "Agree to the Terms mate")
 })
 
@@ -27,6 +27,12 @@ function Form() {
     password: '',
     terms: ''
   });
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    console.log('users after useEffect', users);
+  }, [users]);
 
   const validate = e => {
 
@@ -54,7 +60,7 @@ function Form() {
     validate(e);
     let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
     setFormData({ ...formData, [e.target.name]: value })
-    console.log(formData);
+    // console.log(formData);
   }
 
   const formSubmit = e => {
@@ -63,7 +69,9 @@ function Form() {
     axios
       .post(`https://reqres.in/api/users`, formData)
       .then(res => {
-        console.log(res);
+        // console.log(res);
+        setUsers( [...users, res] );
+        console.log(users);
       })
       .catch(err => {
         console.log(err);
