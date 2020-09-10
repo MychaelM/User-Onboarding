@@ -22,5 +22,9 @@ describe("Testing the Form", () => {
       // cy.get(".nameError").should("have.value", "Name is definitely required.");
 
       cy.get("#name").type(name);
+
+      cy.get("[data-cy=submitButton]").click();
+
+      cy.get("pre").should("not.have.value", "{}");
     })
 })

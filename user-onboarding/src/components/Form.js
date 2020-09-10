@@ -143,7 +143,7 @@ function Form() {
       </label>
       <br />
 
-      <button type="submit">Submit</button>
+      <button data-cy="submitButton" type="submit">Submit</button>
     </form>
 
       {users.map((user, index) => (<pre key={index}>{JSON.stringify(user.data)}</pre>))}
