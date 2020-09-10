@@ -98,7 +98,7 @@ function Form() {
       </label>
       <br/>
       {errorState.name.length > 0 ? (
-        <p>{errorState.name}</p>
+        <p className="nameError">{errorState.name}</p>
       ) : null}
 
       <label htmlFor="email">Email
